@@ -1,15 +1,26 @@
 import * as React from 'react';
+import { useState, useEffect } from 'react';
 import Layout from '../components/layout';
-import { StaticImage } from 'gatsby-plugin-image';
 
 const IndexPage = () => {
+	const [img, setImg] = useState('');
+
+	useEffect(() => {
+		fetchImages();
+	}, []);
+
+	const endpoint = 'https://dog.ceo/api/breeds/image/random';
+
+	const fetchImages = () => {
+		fetch(endpoint)
+			.then((res) => res.json())
+			.then((data) => setImg(data.message));
+	};
+
 	return (
 		<Layout pageTitle="Home Page">
 			<h1>This is the home page</h1>
-			<StaticImage
-				alt="Clifford, a reddish-brown pitbull, dozing in a bean bag chair"
-				src="../images/demo.webp"
-			/>
+			<img alt="Random picture of dogs" src={img} />
 		</Layout>
 	);
 };
